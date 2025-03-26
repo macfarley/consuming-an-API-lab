@@ -1,7 +1,15 @@
 <% include('../partials/header') %>
-<% console.log(weather) %>    
-<!-- <h1>Weather for <%= weather.name %></h1>
-    <p>Temperature: <%= weather.temp %>°F</p>
-    <p>Humidity: <%= weather.humidity %>%</p>
-    <p>Weather: <%= weather %></p> -->
+<h1>Weather for <%= weather.name %></h1>
+    <p>Temperature: <%= weather.main.temp %>°F</p>
+    <p>Humidity: <%= weather.main.humidity %>%</p>
+    <p>Weather: <%= weather.weather[0].description %></p>
+
+<h2>Five Day Forecast</h2>
+    <ol id="forecastContainer">
+        <% times.forEach(time => { %>
+            <li>
+              <%= time %>
+            </li>            
+        <% }) %>
+    </ol>
 <% include('../partials/footer') %>
