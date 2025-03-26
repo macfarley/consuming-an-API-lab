@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "jsdom": "^26.0.0",
+    "y": "^0.3.2"
+  },
+  "name": "consuming-an-api-lab",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/macfarley/consuming-an-API-lab.git"
+  },
+  "author": "macfarley",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/macfarley/consuming-an-API-lab/issues"
+  },
+  "homepage": "https://github.com/macfarley/consuming-an-API-lab#readme",
+  "description": ""
+}

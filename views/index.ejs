@@ -1,0 +1,14 @@
+<% include('partials/header') %>
+
+
+
+    <form action="/weather" method="post" >
+        <label for="zipCode">Zip Code:</label>
+        <input type="number" id="zipCode" name="ZipCode" required class="zip">
+        <button type="submit" id="submit">Get Weather</button>
+    </form>
+
+
+
+
+<% include('partials/footer') %>
