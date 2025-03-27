@@ -16,6 +16,7 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.render("index.ejs");
 });
+
 //post request by zip code using submit button
 //listen for the submit button and run a post request
 const document = new JSDOM(`<!DOCTYPE html>`).window.document;
@@ -23,6 +24,7 @@ document.body.innerHTML = `
   <input type="text" id="zipCode" placeholder="Enter Zip Code" />
   <button id="submit">Submit</button>
 `;  
+
 const submitButton = document.getElementById("submit");
 submitButton.addEventListener("click", (event) => {
   const zipCode = document.getElementById("zipCode").value;
@@ -62,27 +64,39 @@ app.post("/weather", async (req, res) => {
     const weatherDataByDay = []
     for(let i = 0; i< forecastData.list.length; i++){
       //extract month and day from a date to make a key MM-DD
-      const date = convertTimestampToDate(forecastData.list[i].dt);
-
+      const date = forecastData.list[i].dt_txt;
+      const dateObject = new Date(date);
+      const month = (dateObject.getMonth() + 1).toString().padStart(2, "0");
+      const day = dateObject.getDate().toString().padStart(2, "0");
+      const key = `${month}-${day}`;
       //if that key is not inside daysInArray, push in
-          //create a new object with forecastData
-          {
-            "date":"YYYY-MM-DD",
-            "weather":"cloudy",
-            "high":283,
-            "average":270,
-            "dayOfWeek":"Monday"
-            }
-          //push the key into daysInArray
-          //push data object into weatherDataByDay
-    }
-  // {day of the week: Thursday,
-  //   date: mm/dd/yyyy,
-  //   high temperature: 001 F,
-  //   weather: description,
-  // }
+      if(!daysInArray.includes(key)){
+        daysInArray.push(key);
+        }
+        // Limit the daysInArray to 5 unique days
+        if (daysInArray.length > 5) break;
 
-    res.render("./weather/show.ejs", { weather: weatherData, times: timeArray });
+        // Check if the key already exists in weatherDataByDay
+        const existingDay = weatherDataByDay.find(day => day.date === key);
+        if (existingDay) {
+            // Append the weather description to the existing day's description if it doesn't already exist
+            if (!existingDay.weather.includes(forecastData.list[i].weather[0].description)) {
+            existingDay.weather += `, ${forecastData.list[i].weather[0].description}`;
+            }
+          continue;
+        }
+        //create a new object with forecastData
+      const dataObject = {
+        date: key,
+        weather: forecastData.list[i].weather[0].description,
+        high: ((forecastData.list[i].main.temp_max - 273.15) * 9/5 + 32).toFixed(2),
+        average: ((forecastData.list[i].main.temp - 273.15) * 9/5 + 32).toFixed(2),
+        dayOfWeek: new Date(date).toLocaleDateString("en-US", { weekday: "long" })
+      };
+      weatherDataByDay.push(dataObject);
+    }
+
+    res.render("./weather/show.ejs", { weather: weatherData, weatherDataByDay, daysInArray});
   } catch (error) {
     console.error("Invalid Zip Code", error);
     res.status(500).send("Error retrieving weather data");

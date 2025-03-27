@@ -1,14 +1,19 @@
 <% include('../partials/header') %>
-<h1>Weather for <%= weather.name %></h1>
+<h1>Current Weather for <%= weather.name %></h1>
     <p>Temperature: <%= weather.main.temp %>°F</p>
     <p>Humidity: <%= weather.main.humidity %>%</p>
     <p>Weather: <%= weather.weather[0].description %></p>
 
 <h2>Five Day Forecast</h2>
     <ol id="forecastContainer">
-        <% times.forEach(time => { %>
+        <% weatherDataByDay.forEach(day => { %>
             <li>
-              <%= time %>
+            <div>
+                <p><strong>Day:</strong> <%= day.dayOfWeek %></p>
+                <p><strong>Date:</strong> <%= day.date %></p>
+                <p><strong>High Temp:</strong> <%= day.high %>°F</p>
+                <p><strong>Weather:</strong> <%= day.weather %></p>
+            </div>
             </li>            
         <% }) %>
     </ol>
